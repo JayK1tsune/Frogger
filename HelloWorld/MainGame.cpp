@@ -16,8 +16,13 @@ enum GameObjectType
 {
 	TYPE_NULL = -1,
 	TYPE_AGENT8,
+	TYPE_CAR,
+	TYPE_LOG,
+	
 };
 void HandlePlayerControls();
+void UpdateCar();
+void UpdateLog();
 
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
@@ -27,6 +32,11 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::LoadBackground("Data\\Backgrounds\\Frogger.png");
 	Play::StartAudioLoop("music");
 	Play::CreateGameObject(TYPE_AGENT8, { 640, 720 }, 20, "Frog");
+	int id_car = Play::CreateGameObject(TYPE_CAR, { 30, 410 }, 50, "car_1");
+	Play::GetGameObject(id_car).velocity = { 0,100 };
+	Play::GetGameObject(id_car).acceleration = { 0,10 };
+	Play::GetGameObject(id_car).animSpeed = 1.0f;
+
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -34,8 +44,15 @@ bool MainGameUpdate( float elapsedTime )
 {
 	Play::DrawBackground();
 	HandlePlayerControls();
+	UpdateCar();
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );
+}
+void UpdateCar()
+{
+	GameObject& obj_car = Play::GetGameObjectByType(TYPE_CAR);
+	Play::DrawObject(obj_car);
+	
 }
 void HandlePlayerControls()
 {
@@ -43,24 +60,24 @@ void HandlePlayerControls()
 	if (Play::KeyDown(VK_UP))
 	{
 		obj_Frog.velocity = { 0, -4};
-		Play::SetSprite(obj_Frog, "Frog_3", 0.2f);
+		Play::SetSprite(obj_Frog, "Frog_3", 0);
 	}
 	else if (Play::KeyDown(VK_DOWN))
 	{
 		obj_Frog.acceleration = { 0, 1 };
 		//obj_Frog.animSpeed = 0.5;
-		Play::SetSprite(obj_Frog, "Frog_3", 0.2f);
+		Play::SetSprite(obj_Frog, "Frog_3", 0);
 		
 	}
 	else if (Play::KeyDown(VK_LEFT))
 	{
 		obj_Frog.acceleration = { -1, 0 };
-		Play::SetSprite(obj_Frog, "Frog_3", 0.2f);
+		Play::SetSprite(obj_Frog, "Frog_3", 0);
 	}
 	else if (Play::KeyDown(VK_RIGHT))
 	{
 		obj_Frog.acceleration = { 1, 0 };
-		Play::SetSprite(obj_Frog, "Frog_3", 0.2f);
+		Play::SetSprite(obj_Frog, "Frog_3", 0);
 	}
 	else
 	{
