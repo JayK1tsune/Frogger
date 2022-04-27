@@ -30,7 +30,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
 	Play::CentreAllSpriteOrigins();
 	Play::LoadBackground("Data\\Backgrounds\\Frogger.png");
-	Play::StartAudioLoop("music");
+	//Play::StartAudioLoop("music");
 	Play::CreateGameObject(TYPE_AGENT8, { 640, 720 }, 20, "Frog");
 	int id_car = Play::CreateGameObject(TYPE_CAR, { 30, 410 }, 50, "car_1");
 	Play::GetGameObject(id_car).velocity = { 0,100 };
