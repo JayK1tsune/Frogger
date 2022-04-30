@@ -33,8 +33,8 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	//Play::StartAudioLoop("music");
 	Play::CreateGameObject(TYPE_AGENT8, { 640, 720 }, 20, "Frog");
 	int id_car = Play::CreateGameObject(TYPE_CAR, { 30, 410 }, 50, "car_1");
-	Play::GetGameObject(id_car).velocity = { 0,100 };
-	Play::GetGameObject(id_car).acceleration = { 0,10 };
+	//Play::GetGameObject(id_car).velocity = { 0,1};
+	Play::GetGameObject(id_car).acceleration = { 10,0 };
 	Play::GetGameObject(id_car).animSpeed = 1.0f;
 
 }
@@ -52,7 +52,19 @@ void UpdateCar()
 {
 	GameObject& obj_car = Play::GetGameObjectByType(TYPE_CAR);
 	Play::DrawObject(obj_car);
+	obj_car.pos.y = 410;
+	obj_car.pos.x = 30;
 	
+	//Play::MoveSpriteOrigin("car_1", -3, 0);
+	Play::UpdateGameObject(obj_car);
+	if (Play::IsLeavingDisplayArea(obj_car))
+	{
+		//Play::DestroyGameObject(obj_car);
+	}
+		
+	
+	
+			
 }
 void HandlePlayerControls()
 {
