@@ -60,6 +60,7 @@ void UpdateCar()
 	if (Play::IsLeavingDisplayArea(obj_car))
 	{
 		//Play::DestroyGameObject(obj_car);
+		
 	}
 		
 	
