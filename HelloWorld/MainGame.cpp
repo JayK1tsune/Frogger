@@ -1,6 +1,7 @@
 #define PLAY_IMPLEMENTATION
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Play.h"
+#include "Objects.h"
 
 int DISPLAY_WIDTH = 1280;
 int DISPLAY_HEIGHT = 720;
@@ -51,21 +52,21 @@ bool MainGameUpdate( float elapsedTime )
 void UpdateCar()
 {
 	GameObject& obj_car = Play::GetGameObjectByType(TYPE_CAR);
-	Play::DrawObject(obj_car);
+
+	
 	obj_car.pos.y = 410;
 	obj_car.pos.x = 30;
-	
-	//Play::MoveSpriteOrigin("car_1", -3, 0);
 	Play::UpdateGameObject(obj_car);
+
 	if (Play::IsLeavingDisplayArea(obj_car))
 	{
-		//Play::DestroyGameObject(obj_car);
-		
+		obj_car.pos = obj_car.oldPos;
+		obj_car.acceleration *= 1;
+		obj_car.velocity.x *= 1; 
+		Play::DrawObjectRotated(obj_car);
 	}
-		
+	Play::DrawObject(obj_car);
 	
-	
-			
 }
 void HandlePlayerControls()
 {
