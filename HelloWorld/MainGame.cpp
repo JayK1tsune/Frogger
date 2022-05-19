@@ -1,43 +1,54 @@
+#ifndef PLAY_IMPLEMENTATION
 #define PLAY_IMPLEMENTATION
+#endif
+#ifndef PLAY_USING_GAMEOBJECT_MANAGER
 #define PLAY_USING_GAMEOBJECT_MANAGER
+#endif
 #include "Play.h"
 #include "Objects.h"
 
-int DISPLAY_WIDTH = 1280;
-int DISPLAY_HEIGHT = 720;
-int DISPLAY_SCALE = 1;
-
-struct Gamestate
-{
-	int score = 0;
-};
-Gamestate gamestate;
-
-enum GameObjectType
-{
-	TYPE_NULL = -1,
-	TYPE_AGENT8,
-	TYPE_CAR,
-	TYPE_LOG,
-	
-};
 void HandlePlayerControls();
-void UpdateCar();
-void UpdateLog();
+void UpdateObjects();
+void Lives();
+bool gamerunning = true;
 
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
-	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
+	Play::CreateManager( gfunctions.DISPLAY_WIDTH, gfunctions.DISPLAY_HEIGHT, gfunctions.DISPLAY_SCALE );
 	Play::CentreAllSpriteOrigins();
 	Play::LoadBackground("Data\\Backgrounds\\Frogger.png");
 	//Play::StartAudioLoop("music");
 	Play::CreateGameObject(TYPE_AGENT8, { 640, 720 }, 20, "Frog");
-	int id_car = Play::CreateGameObject(TYPE_CAR, { 30, 410 }, 50, "car_1");
-	//Play::GetGameObject(id_car).velocity = { 0,1};
-	Play::GetGameObject(id_car).acceleration = { 10,0 };
-	Play::GetGameObject(id_car).animSpeed = 1.0f;
+	Play::CentreSpriteOrigin("Frog");
+	//top cars
+	car1.spawnRedCar(410, 0, 50, 5);
+	car7.spawnBedCar(410, 600, 50, 5);
+	car3.spawnRedCar(410, 960, 50, 5);
+	//bottom cars
+	car6.spawnBedCar(600, 800, 50, 7);
+	car2.spawnRedCar(600, 280, 50, 7);
 
+	//middle cars
+	car4.spawnBedCar(510, 800, 50, 4);
+	car5.spawnBedCar(510, 400, 50, 4);
+	lorry1.spawnLorry(510, -200, 50, 2);
+	//bottom lane 1
+	log1.spawnLog(240, 0, 50, 5);
+	log3.spawnLog(240, 500, 50, 5);
+
+	turtle1.spawnturtle(200, 0,50, 5);
+
+	//lillypads
+	lilly1.lilly(70, 160, 50);
+	lilly2.lilly(70, 390, 50);
+	lilly3.lilly(70, 620, 50);
+	lilly4.lilly(70, 850, 50);
+	lilly5.lilly(70, 1075, 50);
+
+	lives1.lives(700, 5,0);
+	lives2.lives(700, 50,0);
+	lives3.lives(700, 100,0);
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -45,53 +56,42 @@ bool MainGameUpdate( float elapsedTime )
 {
 	Play::DrawBackground();
 	HandlePlayerControls();
-	UpdateCar();
+	UpdateObjects();
+	Lives();
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );
 }
-void UpdateCar()
-{
-	GameObject& obj_car = Play::GetGameObjectByType(TYPE_CAR);
-
-	
-	obj_car.pos.y = 410;
-	obj_car.pos.x = 30;
-	Play::UpdateGameObject(obj_car);
-
-	if (Play::IsLeavingDisplayArea(obj_car))
-	{
-		obj_car.pos = obj_car.oldPos;
-		obj_car.acceleration *= 1;
-		obj_car.velocity.x *= 1; 
-		Play::DrawObjectRotated(obj_car);
-	}
-	Play::DrawObject(obj_car);
-	
-}
 void HandlePlayerControls()
 {
+
 	GameObject& obj_Frog = Play::GetGameObjectByType(TYPE_AGENT8);
+	Play::CentreSpriteOrigin("Frog_1");
+	Play::CentreSpriteOrigin("jumping_frog");
 	if (Play::KeyDown(VK_UP))
 	{
-		obj_Frog.velocity = { 0, -4};
-		Play::SetSprite(obj_Frog, "Frog_3", 0);
+		obj_Frog.velocity = { 0, -4 };
+		
+
+		
+		Play::SetSprite(obj_Frog, "jumping_frog", 0.05f);
 	}
 	else if (Play::KeyDown(VK_DOWN))
 	{
-		obj_Frog.acceleration = { 0, 1 };
-		//obj_Frog.animSpeed = 0.5;
-		Play::SetSprite(obj_Frog, "Frog_3", 0);
-		
+		obj_Frog.velocity = { 0, 4 };
+	
+		Play::SetSprite(obj_Frog, "jumping_frog", 0.05f);
+
 	}
 	else if (Play::KeyDown(VK_LEFT))
 	{
-		obj_Frog.acceleration = { -1, 0 };
-		Play::SetSprite(obj_Frog, "Frog_3", 0);
+		obj_Frog.velocity = { -4, 0 };
+		
+		Play::SetSprite(obj_Frog, "jumping_frog", 0.05f);
 	}
 	else if (Play::KeyDown(VK_RIGHT))
 	{
-		obj_Frog.acceleration = { 1, 0 };
-		Play::SetSprite(obj_Frog, "Frog_3", 0);
+		obj_Frog.velocity = { 4, 0 };
+		Play::SetSprite(obj_Frog, "jumping_frog", 0.05f);
 	}
 	else
 	{
@@ -103,13 +103,60 @@ void HandlePlayerControls()
 	if (Play::IsLeavingDisplayArea(obj_Frog))
 		obj_Frog.pos = obj_Frog.oldPos;
 	//Play::DrawLine({ obj_Frog.pos.x, 0 }, obj_Frog.pos, Play::cWhite);
-	   Play::DrawObjectRotated(obj_Frog);
+	Play::DrawObjectRotated(obj_Frog);
+}
+void UpdateObjects()
+{
+	car1.UpdateCar();
+	car2.UpdateCar();
+	car3.UpdateCar();
+	car4.UpdateCar();
+	car5.UpdateCar();
+	car6.UpdateCar();
+	car7.UpdateCar();
+	lorry1.UpdateCar();
+	log1.UpdateLog();
+	log3.UpdateLog();
+	turtle1.UpdateLog();
+	lilly1.updateEnd();
+	lilly2.updateEnd();
+	lilly3.updateEnd();
+	lilly4.updateEnd();
+	lilly5.updateEnd();
+	lives1.UpdateLives();
+	lives2.UpdateLives();
+	lives3.UpdateLives();
+
+
+
 }
 
 // Gets called once when the player quits the game 
 int MainGameExit( void )
 {
 	Play::DestroyManager();
+	gamerunning = false;
 	return PLAY_OK;
 }
+void Lives()
+{
+	std::vector<int> lives_id = Play::CollectGameObjectIDsByType(TYPE_LIVES);
+	gobject.idFrog = Play::CreateGameObject(TYPE_LIVES, { gobject.startX, gobject.startY }, gobject.collision, "frog_1");
+	GameObject& obj_lifes = Play::GetGameObject(gobject.idFrog);
+	if (lives1.live > 3)
+	{
+		Play::DestroyGameObject(lives_id[0]);
+	}
+	else if (lives1.live >= 2)
+	{
+		Play::DestroyGameObject(lives_id[1]);
+	}
+	//if (lives1.live == 1)
+	//{
+	//	Play::DestroyGameObject(lives_id[1]);
+	//}
 
+	
+
+	
+}
