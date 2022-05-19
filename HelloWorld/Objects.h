@@ -33,6 +33,7 @@ public:
 	int idFrog;
 	int live = 3;
 	bool hasCollided;
+	bool gamerunning;
 	//used to spawn lives in the bottom left
 	void lives(float yPos, float xPos, float Col)
 	{
@@ -228,6 +229,7 @@ public:
 			Play::DrawFontText("132px", "YOU LOSE ",
 			{ gfunctions.DISPLAY_WIDTH / 2, 330 }, Play::CENTRE);
 			obj_Frog.velocity = { 0,0 };
+			int MainGameExit(void);
 
 		}
 		

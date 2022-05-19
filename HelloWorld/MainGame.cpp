@@ -10,7 +10,7 @@
 void HandlePlayerControls();
 void UpdateObjects();
 void Lives();
-bool gamerunning = true;
+
 
 // The entry point for a PlayBuffer program
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
@@ -37,7 +37,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	log1.spawnLog(240, 0, 50, 5);
 	log3.spawnLog(240, 500, 50, 5);
 
-	turtle1.spawnturtle(200, 0,50, 5);
+	//turtle1.spawnturtle(200, 0,50, 5);
 
 	//lillypads
 	lilly1.lilly(70, 160, 50);
@@ -135,7 +135,7 @@ void UpdateObjects()
 int MainGameExit( void )
 {
 	Play::DestroyManager();
-	gamerunning = false;
+	
 	return PLAY_OK;
 }
 void Lives()
