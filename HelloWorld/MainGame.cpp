@@ -9,7 +9,7 @@
 
 void HandlePlayerControls();
 void UpdateObjects();
-void Lives();
+//void Lives();
 
 
 // The entry point for a PlayBuffer program
@@ -34,8 +34,12 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	car5.spawnBedCar(510, 400, 50, 4);
 	lorry1.spawnLorry(510, -200, 50, 2);
 	//bottom lane 1
-	log1.spawnLog(240, 0, 50, 5);
-	log3.spawnLog(240, 500, 50, 5);
+	log1.spawnLog(240, 800, 50, 3);
+	log3.spawnLog(240, 400, 50, 3);
+	log7.spawnLog(240, -200, 50, 3);
+	log4.spawnLog(150, 50, 50, 6);
+	log5.spawnLog(150, 800, 50, 6);
+	log6.spawnLog(150, 1000, 50, 6);
 
 	//turtle1.spawnturtle(200, 0,50, 5);
 
@@ -57,7 +61,7 @@ bool MainGameUpdate( float elapsedTime )
 	Play::DrawBackground();
 	HandlePlayerControls();
 	UpdateObjects();
-	Lives();
+	
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( VK_ESCAPE );
 }
@@ -117,6 +121,10 @@ void UpdateObjects()
 	lorry1.UpdateCar();
 	log1.UpdateLog();
 	log3.UpdateLog();
+	log4.UpdateLog();
+	log5.UpdateLog();
+	log6.UpdateLog();
+	log7.UpdateLog();
 	turtle1.UpdateLog();
 	lilly1.updateEnd();
 	lilly2.updateEnd();
@@ -137,26 +145,14 @@ int MainGameExit( void )
 	Play::DestroyManager();
 	
 	return PLAY_OK;
-}
-void Lives()
-{
-	std::vector<int> lives_id = Play::CollectGameObjectIDsByType(TYPE_LIVES);
-	gobject.idFrog = Play::CreateGameObject(TYPE_LIVES, { gobject.startX, gobject.startY }, gobject.collision, "frog_1");
-	GameObject& obj_lifes = Play::GetGameObject(gobject.idFrog);
-	if (lives1.live > 3)
-	{
-		Play::DestroyGameObject(lives_id[0]);
-	}
-	else if (lives1.live >= 2)
-	{
-		Play::DestroyGameObject(lives_id[1]);
-	}
-	//if (lives1.live == 1)
-	//{
-	//	Play::DestroyGameObject(lives_id[1]);
-	//}
+//}
+//void Lives()
+//{
+//	std::vector<int> lives_id = Play::CollectGameObjectIDsByType(TYPE_LIVES);
+//	gobject.idFrog = Play::CreateGameObject(TYPE_LIVES, { gobject.startX, gobject.startY }, gobject.collision, "frog_1");
+//	GameObject& obj_lifes = Play::GetGameObject(gobject.idFrog);
+//	if (lives1.live > 3)
+//	{
+//		Play::DestroyGameObject(lives_id[0]);
+//	}
 
-	
-
-	
-}

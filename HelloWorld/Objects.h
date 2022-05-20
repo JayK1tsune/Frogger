@@ -216,7 +216,7 @@ public:
 		{
 			live--;
 			obj_Frog.pos = { 640, 720 };
-			hasCollided = true;
+			
 			
 		}
 
@@ -229,7 +229,8 @@ public:
 			Play::DrawFontText("132px", "YOU LOSE ",
 			{ gfunctions.DISPLAY_WIDTH / 2, 330 }, Play::CENTRE);
 			obj_Frog.velocity = { 0,0 };
-			int MainGameExit(void);
+			//system("pause>0"); NEVER use this! 
+			
 
 		}
 		
@@ -279,6 +280,10 @@ GObject log3;
 GObject log4;
 GObject log5;
 GObject log6;
+GObject log7;
+GObject log8;
+GObject log9;
+
 
 GObject lilly1;
 GObject lilly2;
